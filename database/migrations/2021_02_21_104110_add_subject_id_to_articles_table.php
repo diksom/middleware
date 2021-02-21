@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRolesTable extends Migration
+class AddSubjectIdToArticlesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->integer('id')->primary();
-            $table->string('name');
-            $table->timestamps();
+        Schema::table('articles', function (Blueprint $table) {
+            $table->unsignedBigInteger('subject_id')->default(1);
+            $table->foreign('subject_id')->references('id')->on('articles')->onDelete('cascade');
         });
     }
 
@@ -27,6 +26,8 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::table('articles', function (Blueprint $table) {
+            //
+        });
     }
 }

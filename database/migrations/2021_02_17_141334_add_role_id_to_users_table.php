@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIdrolesToUsersTable extends Migration
+class AddRoleIdToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,8 @@ class AddIdrolesToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('idroles')->default(1);
-            $table->foreign('idroles')->references('idroles')->on('roles')->onDelete('cascade');
+            $table->integer('role_id')->default(1);
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOtpCodesTable extends Migration
+class CreateArticlesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateOtpCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('otp_codes', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create('articles', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('otp');
-            $table->dateTime('valid_until');
+            $table->string('title');
+            $table->string('slug');
+            $table->text('body');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateOtpCodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('otp_codes');
+        Schema::dropIfExists('articles');
     }
 }

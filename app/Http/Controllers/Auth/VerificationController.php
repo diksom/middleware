@@ -3,40 +3,41 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\VerifiesEmails;
+use App\Models\OtpCode;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon as SupportCarbon;
 
 class VerificationController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Email Verification Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling email verification for any
-    | user that recently registered with the application. Emails may also
-    | be re-sent if the user didn't receive the original email message.
-    |
-    */
-
-    use VerifiesEmails;
-
-    /**
-     * Where to redirect users after verification.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __invoke(Request $request)
     {
-        $this->middleware('auth');
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
+        $otp_code = OtpCode::where('otp', $request->otp)->first();
+        if (!$otp_code) {
+            return response()->json([
+                'response_code' => '01',
+                'response_message' => 'OTP Code tidak ditemukan',
+            ], 200);
+        }
+        $now = Carbon::now();
+        if ($now > $otp_code->valid_until) {
+            return response()->json([
+                'response_code' => '01',
+                'response_message' => 'OTP sudah tidak berlaku',
+            ], 200);
+        }
+
+        $user = User::find($otp_code->user_id);
+        $user->email_verified_at = Carbon::now();
+        $user->save();
+
+        $otp_code->delete();
+        $data['users'] = $user;
+        return response()->json([
+            'response_code' => '00',
+            'response_message' => 'Email berhasil di verifikasi',
+            'data' => $data
+        ], 200);
     }
 }
