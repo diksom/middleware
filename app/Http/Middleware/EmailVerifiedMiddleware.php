@@ -3,9 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
 
-class EmailMiddleware
+class EmailVerifiedMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,9 +15,12 @@ class EmailMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->isVerified()) {
+        $user = auth()->user();
+        if ($user->password != null && $user->email_verified_at != null) {
             return $next($request);
         }
-        abort(403);
+        return response()->json([
+            'message' => 'Email anda belum terverifikasi'
+        ]);
     }
 }

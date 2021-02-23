@@ -3,16 +3,53 @@
 namespace App;
 
 use App\Traits\UsesUuid;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
+    // Rest omitted for brevity
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
     use Notifiable, UsesUuid;
+    protected function get_user_role_id()
+    {
+        $role = \App\Role::where('name', 'user')->first();
+        return $role->id;
+    }
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->role_id = $model->get_user_role_id();
+        });
+        static::created(function ($model) {
+            $model->generate_otp_code();
+        });
+    }
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'photo_profile'
     ];
 
     /**
@@ -32,19 +69,37 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
     public function isAdmin()
     {
-        if ($this->idroles == 2) {
-            return true;
+        if ($this->role_id === $this->get_user_role_id()) {
+            return false;
         }
-        return false;
+        return true;
     }
-    public function isVerified()
+    public function generate_otp_code()
     {
-        if ($this->email_verified_at != null) {
-            return true;
-        }
-        return false;
+        do {
+            $random = mt_rand(100000, 999999);
+            $check = OtpCode::where('otp', $random)->first();
+        } while ($check);
+        $now = Carbon::now();
+        $otp_code = OtpCode::updateOrCreate(
+            ['user_id' => $this->id],
+            ['otp' => $random, 'valid_until' => $now->addMinutes(5)]
+        );
     }
+    // public function isAdmin()
+    // {
+    //     if ($this->idroles == 2) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
+    // public function isVerified()
+    // {
+    //     if ($this->email_verified_at != null) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 }

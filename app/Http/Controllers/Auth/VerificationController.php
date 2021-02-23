@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\OtpCode;
-use App\Models\User;
-use Carbon\Carbon;
+use App\OtpCode;
+use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon as SupportCarbon;
+use Illuminate\Support\Carbon;
 
 class VerificationController extends Controller
 {
     public function __invoke(Request $request)
     {
+        $request->validate([
+            'otp' => 'required'
+        ]);
         $otp_code = OtpCode::where('otp', $request->otp)->first();
         if (!$otp_code) {
             return response()->json([
@@ -24,7 +26,7 @@ class VerificationController extends Controller
         if ($now > $otp_code->valid_until) {
             return response()->json([
                 'response_code' => '01',
-                'response_message' => 'OTP sudah tidak berlaku',
+                'response_message' => 'OTP sudah tidak berlaku silahkan generate ulang',
             ], 200);
         }
 
@@ -36,7 +38,7 @@ class VerificationController extends Controller
         $data['users'] = $user;
         return response()->json([
             'response_code' => '00',
-            'response_message' => 'Email berhasil di verifikasi',
+            'response_message' => 'User berhasil di verifikasi',
             'data' => $data
         ], 200);
     }

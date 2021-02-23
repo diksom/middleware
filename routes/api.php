@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 Route::group([
     'middleware' => 'api',
@@ -9,16 +9,14 @@ Route::group([
     'namespace' => 'Auth'
 ], function () {
     Route::post('register', 'RegisterController');
-    // Route::post('login', 'loginController');
-    Route::post('verification', 'VerificationController');
     Route::post('regenerate-otp', 'RegenerateOtpCodeController');
-    // Route::post('update-password', 'UpdatePasswordController');
-    // // Route::post('logout', 'logoutController');
+    Route::post('verification', 'VerificationController');
+    Route::post('update-password', 'UpdatePasswordController');
+    Route::post('login', 'LoginController');
 });
-// Route::namespace('Article')->middleware('auth:api')->group(function () {
-//     Route::post('create-new-article', 'ArticleController@store');
-//     Route::patch('update-the-selected-article/{article}', 'ArticleController@update');
-//     Route::delete('delete-the-selected-article/{article}', 'ArticleController@destroy');
-// });
-// Route::get('articles', 'Article\ArticleController@index');
-// Route::get('user', 'UserController');
+Route::group([
+    'middleware' => ['api', 'email_verified', 'auth:api'],
+], function () {
+    Route::get('profile/show', 'ProfileController@show');
+    Route::post('profile/update', 'ProfileController@update');
+});

@@ -19,9 +19,16 @@ class LoginController extends Controller
             'email' => 'required',
             'password' => 'required'
         ]);
-        if (!$token = auth()->attempt($request->only('email', 'password'))) {
-            return response(null, 401);
+        $credential = $request->only(['email', 'password']);
+        if (!$token = auth()->attempt($credential)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return response()->json(compact('token'));
+        $data['token'] = $token;
+        $data['user'] = auth()->user();
+        return response()->json([
+            'response_code' => '00',
+            'response_message' => 'User berhasil login ',
+            'data' => $data
+        ], 200);
     }
 }

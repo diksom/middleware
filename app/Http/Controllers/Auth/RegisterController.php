@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\RegisterRequest;
-use App\Models\User;
-use App\Models\OtpCode;
-use Carbon\Carbon;
+use App\User;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -16,26 +14,19 @@ class RegisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(RegisterRequest $request)
+    public function __invoke(Request $request)
     {
-        $user = User::create([
-            'name' => request('name'),
-            // 'username' => request('username'),
-            'email' => request('email')
-            // 'password' => bcrypt(request('password'))
+        $request->validate([
+            'name' => ['string', 'required'],
+            'email' => ['email', 'required',  'unique:users,email']
         ]);
-        $random = mt_rand(100000, 999999);
-        $valid_until = Carbon::now()->addMinutes(5);
-        $otp = OtpCode::create([
-            'valid_until' => $valid_until,
-            'otp' => $random,
-            'user_id' => $user->id
-        ]);
-
+        $data_request = $request->all();
+        $user = User::create($data_request);
+        $data['user'] = $user;
         return response()->json([
             'response_code' => '00',
             'response_message' => 'Silahkan cek email',
-            'data' => $user
+            'data' => $data
         ], 200);
     }
 }
