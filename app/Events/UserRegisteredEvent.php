@@ -14,15 +14,16 @@ use App\User;
 class UserRegisteredEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $user;
+    public $user, $condition;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, $condition)
     {
         $this->user = $user;
+        $this->condition = $condition;
     }
 
     /**

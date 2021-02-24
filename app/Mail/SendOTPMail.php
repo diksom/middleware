@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\OtpCode;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,15 +11,16 @@ use Illuminate\Queue\SerializesModels;
 class SendOTPMail extends Mailable
 {
     use Queueable, SerializesModels;
-    protected $otpcode;
+    protected $user, $pesan;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(OtpCode $otpcode)
+    public function __construct(User $user, $pesan)
     {
-        $this->otpcode = $otpcode;
+        $this->user = $user;
+        $this->pesan = $pesan;
     }
 
     /**
@@ -32,7 +33,8 @@ class SendOTPMail extends Mailable
         return $this->from('diki_somantri@ymail.com')
             ->view('send_otp')
             ->with([
-                'otp' => $this->otpcode->otp,
+                'user' => $this->user,
+                'pesan' => $this->pesan
             ]);
     }
 }

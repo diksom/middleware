@@ -19,14 +19,11 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         'App\Events\UserRegisteredEvent' => [
-            'App\Listeners\SendEmailNotificationUserRegistered',
-            // 'App\Listeners\SendWANotificationUserRegistered',
-            // 'App\Listeners\SendSMSNotificationUserRegistered',
-        ], 'App\Events\SendOTPEvent' => [
             'App\Listeners\SendOTP',
+            // 'App\Listeners\SendEmailNotificationUserRegistered',
             // 'App\Listeners\SendWANotificationUserRegistered',
             // 'App\Listeners\SendSMSNotificationUserRegistered',
-        ],
+        ]
     ];
 
     /**

@@ -26,8 +26,13 @@ class SendOTP implements ShouldQueue
      * @param  SendOTPEvent  $event
      * @return void
      */
-    public function handle(SendOTPEvent $event)
+    public function handle($event)
     {
-        Mail::to($event->otpcode)->send(new SendOTPMail($event->otpcode));
+        if ($event->condition == 'register') {
+            $pesan = "We're excited to have you get started. First you need to confirm your account this isi your OTP Code : ";
+        } elseif ($event->condition == 'regenerate') {
+            $pesan = "Regenerate OTP successfull. This is your OTP Code : ";
+        }
+        Mail::to($event->user)->send(new SendOTPMail($event->user, $pesan));
     }
 }
