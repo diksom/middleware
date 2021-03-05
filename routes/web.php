@@ -11,9 +11,6 @@
 |
 */
 Auth::routes();
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::middleware(['auth', 'admin', 'email'])->group(function () {
     Route::get('/admin', 'TestController@admin');
 });
@@ -21,3 +18,11 @@ Route::middleware(['auth', 'email'])->group(function () {
     Route::get('/user', 'TestController@user');
 });
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/', function () {
+    return view('app');
+});
+// Route::get('/{any?}', function () {
+//     return 'masuk';
+// })->where('any', '.*');
+Route::view('/{any?}', 'app')->where('any', '.*');
