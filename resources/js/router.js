@@ -16,11 +16,21 @@ const router=new Router({
         {
             path:'/donations',
             name:'donations',
-            component:()=>import(/*webpackChunkName:"categories"*/'./views/Donations.vue')
+            component:()=>import('./views/Donations.vue')
         },{
             path:'/blogs',
             name:'blogs',
-            component:()=>import(/*webpackChunkName:"categories"*/'./views/Blogs.vue')
+            component:()=>import('./views/Blogs.vue')
+        },
+        {
+            path:'/campaigns',
+            name:'campaigns',
+            component:()=>import('./views/Campaigns.vue')
+        },
+        {
+            path:'/campaign/:id',
+            name:'campaign',
+            component:()=>import('./views/Campaign.vue')
         },
         {
             path:'*',
