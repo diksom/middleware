@@ -1,5 +1,16 @@
 <template>
   <v-app>
+    <!-- alert -->
+    <alert />
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+      hide-overlay
+      transition="scale-transition"
+    >
+      <search @closed="closeDialog" />
+    </v-dialog>
+
     <!-- Sidebar -->
     <v-navigation-drawer app v-model="drawer">
       <v-list>
@@ -58,18 +69,19 @@
 
       <!-- pemisah konten -->
       <v-spacer></v-spacer>
-      <div id="app">
-        <v-btn icon>
-          <v-badge color="orange" overlap>
-            <template v-slot:badge>
-              <span>{{ count }}</span>
-            </template>
-            <v-icon>mdi-cash-multiple</v-icon>
-          </v-badge>
-        </v-btn>
-      </div>
+
+      <v-btn icon>
+        <v-badge color="orange" overlap v-if="transactions > 0">
+          <template v-slot:badge>
+            <span>{{ transactions }}</span>
+          </template>
+          <v-icon>mdi-cash-multiple</v-icon>
+        </v-badge>
+        <v-icon v-else>mdi-cash-multiple</v-icon>
+      </v-btn>
 
       <v-text-field
+        @click="closeDialog"
         slot="extension"
         hide-details
         append-icon="mdi-microphone"
@@ -85,16 +97,15 @@
         <v-icon>mdi-arrow-left-circle</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <div id="app">
-        <v-btn icon>
-          <v-badge color="orange" overlap>
-            <template v-slot:badge>
-              <span>{{ count }}</span>
-            </template>
-            <v-icon>mdi-cash-multiple</v-icon>
-          </v-badge>
-        </v-btn>
-      </div>
+      <v-btn icon>
+        <v-badge color="orange" overlap v-if="transactions > 0">
+          <template v-slot:badge>
+            <span>{{ transactions }}</span>
+          </template>
+          <v-icon>mdi-cash-multiple</v-icon>
+        </v-badge>
+        <v-icon v-else>mdi-cash-multiple</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <!-- content -->
@@ -118,31 +129,15 @@
     </v-card>
   </v-app>
 </template>
-<script src="https://unpkg.com/vue"></script>
-<script src="https://unpkg.com/vuex"></script>
 <script>
-const store = new Vuex.Store({
-  state: {
-    count: 1,
-  },
-  mutations: {
-    donate(state) {
-      state.count++;
-    },
-  },
-  actions: {},
-});
-
-new Vue({
-  el: "#app",
-  data: {},
-  store,
-});
-</script>
-
-<script>
+import { mapGetters } from "vuex";
+import Alert from "./components/Alert";
 export default {
   name: "App",
+  components: {
+    Alert: () => import("./components/Alert"),
+    Search: () => import("./components/Search"),
+  },
   data: () => ({
     drawer: false,
     menus: [
@@ -150,11 +145,19 @@ export default {
       { title: "Campaigns", icon: "mdi-hand-heart", route: "/campaigns" },
     ],
     guest: false,
-    store: "",
+    dialog: false,
   }),
   computed: {
     isHome() {
       return this.$route.path === "/" || this.$route.path === "/home";
+    },
+    ...mapGetters({
+      transactions: "transaction/transactions",
+    }),
+  },
+  methods: {
+    closeDialog(value) {
+      this.dialog = value;
     },
   },
 };

@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[2],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[6],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Search.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************!*\
@@ -59,7 +59,7 @@ __webpack_require__.r(__webpack_exports__);
   name: "search",
   components: {
     CampaignItem: function CampaignItem() {
-      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./CampaignItem */ "./resources/js/components/CampaignItem.vue"));
+      return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./CampaignItem */ "./resources/js/components/CampaignItem.vue"));
     }
   },
   data: function data() {
