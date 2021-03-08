@@ -68,7 +68,7 @@ export default {
         });
     },
     donate() {
-      alert("donate");
+      alert("Terima kasih telah donate");
     },
   },
 };

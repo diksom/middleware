@@ -79,7 +79,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     donate: function donate() {
-      alert("donate");
+      alert("Terima kasih telah donate");
     }
   }
 });

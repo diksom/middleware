@@ -58,15 +58,16 @@
 
       <!-- pemisah konten -->
       <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-badge color="orange" overlap>
-          <template v-slot:badge>
-            <span>3</span>
-          </template>
-          <v-icon>mdi-cash-multiple</v-icon>
-        </v-badge>
-      </v-btn>
+      <div id="app">
+        <v-btn icon>
+          <v-badge color="orange" overlap>
+            <template v-slot:badge>
+              <span>{{ count }}</span>
+            </template>
+            <v-icon>mdi-cash-multiple</v-icon>
+          </v-badge>
+        </v-btn>
+      </div>
 
       <v-text-field
         slot="extension"
@@ -84,14 +85,16 @@
         <v-icon>mdi-arrow-left-circle</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-badge color="orange" overlap>
-          <template v-slot:badge>
-            <span>3</span>
-          </template>
-          <v-icon>mdi-cash-multiple</v-icon>
-        </v-badge>
-      </v-btn>
+      <div id="app">
+        <v-btn icon>
+          <v-badge color="orange" overlap>
+            <template v-slot:badge>
+              <span>{{ count }}</span>
+            </template>
+            <v-icon>mdi-cash-multiple</v-icon>
+          </v-badge>
+        </v-btn>
+      </div>
     </v-app-bar>
 
     <!-- content -->
@@ -115,6 +118,28 @@
     </v-card>
   </v-app>
 </template>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vuex"></script>
+<script>
+const store = new Vuex.Store({
+  state: {
+    count: 1,
+  },
+  mutations: {
+    donate(state) {
+      state.count++;
+    },
+  },
+  actions: {},
+});
+
+new Vue({
+  el: "#app",
+  data: {},
+  store,
+});
+</script>
+
 <script>
 export default {
   name: "App",
@@ -125,6 +150,7 @@ export default {
       { title: "Campaigns", icon: "mdi-hand-heart", route: "/campaigns" },
     ],
     guest: false,
+    store: "",
   }),
   computed: {
     isHome() {
