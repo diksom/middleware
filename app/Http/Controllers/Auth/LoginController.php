@@ -19,9 +19,9 @@ class LoginController extends Controller
             'email' => 'required',
             'password' => 'required'
         ]);
-        $credential = $request->only(['email', 'password']);
-        if (!$token = auth()->attempt($credential)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $credentials = $request->only(['email', 'password']);
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Email atau Password tidak ditemukan'], 401);
         }
         $data['token'] = $token;
         $data['user'] = auth()->user();

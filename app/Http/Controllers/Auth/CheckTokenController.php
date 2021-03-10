@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class LogoutController extends Controller
+class CheckTokenController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -15,10 +15,10 @@ class LogoutController extends Controller
      */
     public function __invoke(Request $request)
     {
-        auth()->logout();
         return response()->json([
             'response_code' => '00',
-            'response_message' => 'User berhasil logout ',
+            'response_message' => 'Token valid ',
+            'data' => true
         ], 200);
     }
 }
