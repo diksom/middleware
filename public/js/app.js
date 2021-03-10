@@ -2225,10 +2225,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/Alert */ "./resources/js/components/Alert.vue"));
     },
     Search: function Search() {
-      return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./components/Search */ "./resources/js/components/Search.vue"));
+      return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./components/Search */ "./resources/js/components/Search.vue"));
     },
     Login: function Login() {
-      return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! ./components/Login */ "./resources/js/components/Login.vue"));
+      return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./components/Login */ "./resources/js/components/Login.vue"));
     }
   },
   data: function data() {
@@ -101017,13 +101017,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     path: '/donations',
     name: 'donations',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./views/Donations.vue */ "./resources/js/views/Donations.vue"));
+      return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! ./views/Donations.vue */ "./resources/js/views/Donations.vue"));
     }
   }, {
     path: '/blogs',
     name: 'blogs',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/Blogs.vue */ "./resources/js/views/Blogs.vue"));
+      return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./views/Blogs.vue */ "./resources/js/views/Blogs.vue"));
     }
   }, {
     path: '/campaigns',
@@ -101035,7 +101035,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     path: '/campaign/:id',
     name: 'campaign',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./views/Campaign.vue */ "./resources/js/views/Campaign.vue"));
+      return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./views/Campaign.vue */ "./resources/js/views/Campaign.vue"));
+    }
+  }, {
+    path: '/auth/social/:provider/callback',
+    name: 'social',
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./views/Social.vue */ "./resources/js/views/Social.vue"));
     }
   }, {
     path: '*',
